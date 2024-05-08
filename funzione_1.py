@@ -6,3 +6,5 @@ def classe(clas):
         if clas in row:
             docenti.append(row[0])
     return docenti
+
+#ass
