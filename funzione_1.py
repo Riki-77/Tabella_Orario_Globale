@@ -1,10 +1,45 @@
-def classe(clas):
-    file=open('OrarioTabellaGlobale.csv', 'r')
-    filecsv=csv.reader(file) #apre il file csv
-    docenti=[] #lista per poter salvare i nomi dei docenti della classe immessa
-    for row in filecsv: #se trova la classe inserita in una riga, aggiunge i docenti nella lista "docenti"
-        if clas in row:
-            docenti.append(row[0])
-    return docenti
+#elenco docenti di una data classe
+import pydoc
 
-#ass
+#funzione
+def elenco_docenti(classe):
+    '''
+Ritorna l'elenco dei docenti di una classe data.
+
+Args:
+    classe (string): classe data dall'utente
+    
+Returns:
+    elenco : elenco docenti della classe
+    '''
+    file = open('OrarioTabellaGlobale.csv','r') #apertura file in modalità lettura
+    #campi e ore vengono tirati fuori come liste così da non essere incluse nel ciclo di ricerca
+    campi = next(file)
+    ore = next(file)
+    elenco = [] #elenco docenti vuoto
+    uscita = True
+    while uscita == True:
+        riga = file.readline()
+        if riga != '': #esegue fino alla fine del file
+            if classe in riga: #se la classe è nella riga viene aggiunto all'elenco il primo elemento della riga (nome docente)       
+                parti = riga.split(',')
+                elenco.append(parti[0])
+            else:
+                continue
+        else:
+            uscita = False
+    file.close() #chiusura file
+    return elenco
+
+#while True: #loop infinito
+    #input utente
+    in_classe = input('Inserire la classe : ').upper()
+
+    #chiamata funzione
+    docenti = elenco_docenti(in_classe)
+
+    #stampa risultato
+    print(f'I docenti della classe {in_classe} sono:')
+    for elem in docenti:
+        print(elem)
+    print('\n')
