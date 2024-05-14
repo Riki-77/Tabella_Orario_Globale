@@ -1,4 +1,4 @@
-def docenti_lezione_ora(giorno, ora):
+ora):
     file = open('OrarioTabellaGlobale.csv','r')
     campi = next(file)
     ore = next(file)
