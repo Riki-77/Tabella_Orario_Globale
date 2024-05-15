@@ -1,32 +1,38 @@
-def get_teacher_schedule(teacher_name):
-    """
-    Retrieves the schedule for a given teacher from the 'OrarioTabellaGlobale.csv' file.
+def orario_docente(docente):
+    # Open the CSV file
+    file = open('OrarioTabellaGlobale.csv','r')
+    
+    # Read the header fields and time slots
+    campi = next(file)
+    ore = next(file)
+    
+    # Initialize a counter for the total number of teaching hours
+    count = 0
+    
+    # Iterate through the rows in the file
+    for row in file:
+        # Check if the current row contains the teacher's name
+        if docente in row:
+            # Split the row into individual cells
+            riga = row.split(",")
+            # Remove the teacher's name from the row data
+            riga.pop(0)
+            # Iterate through the cells in the row
+            for elem in riga:
+                # Check if the cell is not empty
+                if elem !="   ":
+                    # Increment the total number of teaching hours
+                    count += 1
+        # Continue to the next row
+        continue
+    
+    # Close the file
+    file.close()
+    
+    # Return the header fields, time slots, teacher's schedule, and total number of teaching hours
+    return campi, ore, riga, count
 
-    Args:
-        teacher_name (str): The name of the teacher.
-
-    Returns:
-        tuple: A tuple containing the teacher's schedule and the total number of teaching hours.
-    """
-    F = open('OrarioTabellaGlobale.csv', 'r'):
-        # Skip the first two rows (header and time slots)
-        next(file)
-        next(file)
-
-        teacher_schedule = []
-        total_hours = 0
-        for row in file:
-            if teacher_name in row:
-                row_data = row.split(",")
-                row_data.pop(0)  # Remove the teacher's name
-                for cell in row_data:
-                    if cell.strip() != "   ":
-                        teacher_schedule.append(cell.strip())
-                        total_hours += 1
-
-    return teacher_schedule, total_hours
-
-# Example usage
-teacher_name = input('Enter the teacher name: ')
-schedule, total_hours = get_teacher_schedule(teacher_name)
-print(f"Total teaching hours for {teacher_name}: {total_hours}")
+#main
+#docente =input('Inserire il docente: ') 
+#orario = orario_docente(docente)
+#print(f'ORE TOTALE DI {docente} SONO {orario[3]}')
