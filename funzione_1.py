@@ -1,45 +1,32 @@
-#elenco docenti di una data classe
-import pydoc
-
-#funzione
-def elenco_docenti(classe):
-    '''
-Ritorna l'elenco dei docenti di una classe data.
-
-Args:
-    classe (string): classe data dall'utente
+def get_teacher_schedule(teacher_name):
+    """
+    Retrieves the schedule for a given teacher from the 'OrarioTabellaGlobale.csv' file.
     
-Returns:
-    elenco : elenco docenti della classe
-    '''
-    file = open('OrarioTabellaGlobale.csv','r') #apertura file in modalità lettura
-    #campi e ore vengono tirati fuori come liste così da non essere incluse nel ciclo di ricerca
-    campi = next(file)
-    ore = next(file)
-    elenco = [] #elenco docenti vuoto
-    uscita = True
-    while uscita == True:
-        riga = file.readline()
-        if riga != '': #esegue fino alla fine del file
-            if classe in riga: #se la classe è nella riga viene aggiunto all'elenco il primo elemento della riga (nome docente)       
-                parti = riga.split(',')
-                elenco.append(parti[0])
-            else:
-                continue
-        else:
-            uscita = False
-    file.close() #chiusura file
-    return elenco
+    Args:
+        teacher_name (str): The name of the teacher.
+    
+    Returns:
+        tuple: A tuple containing the teacher's schedule and the total number of teaching hours.
+    """
+    f = open('OrarioTabellaGlobale.csv', 'r') as file:
+        # Skip the first two rows (header and time slots)
+        next(file)
+        next(file)
+        
+        teacher_schedule = []
+        total_hours = 0
+        for row in file:
+            if teacher_name in row:
+                row_data = row.split(",")
+                row_data.pop(0)  # Remove the teacher's name
+                for cell in row_data:
+                    if cell.strip() != "   ":
+                        teacher_schedule.append(cell.strip())
+                        total_hours += 1
+    
+    return teacher_schedule, total_hours
 
-#while True: #loop infinito
-    #input utente
-    in_classe = input('Inserire la classe : ').upper()
-
-    #chiamata funzione
-    docenti = elenco_docenti(in_classe)
-
-    #stampa risultato
-    print(f'I docenti della classe {in_classe} sono:')
-    for elem in docenti:
-        print(elem)
-    print('\n')
+#Main
+teacher_name = input('Enter the teacher name: ')
+schedule, total_hours = get_teacher_schedule(teacher_name)
+print(f"Total teaching hours for {teacher_name}: {total_hours}")
