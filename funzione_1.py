@@ -8,7 +8,7 @@ def get_teacher_schedule(teacher_name):
     Returns:
         tuple: A tuple containing the teacher's schedule and the total number of teaching hours.
     """
-    f = open('OrarioTabellaGlobale.csv', 'r') as file:
+    f = open('OrarioTabellaGlobale.csv', 'r'):
         # Skip the first two rows (header and time slots)
         next(file)
         next(file)
